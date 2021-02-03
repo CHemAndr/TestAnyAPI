@@ -1,15 +1,15 @@
 package home.api;
 
-public class Jresponse {
+public class ResponseObject {
 
-    public Cterm[] suggestions;
+    public Term[] suggestions;
     public String[] products;
-    public Cpages[] pages;
+    public Pages[] pages;
     public boolean showSeeAllProducts;
     public boolean showSeeAllPages;
 
-    public void Jresponse(Cterm[] suggestions, String[] products,
-                          Cpages[] pages, boolean showSeeAllProducts, boolean showSeeAllPages ) {
+    public void ResponseObject(Term[] suggestions, String[] products,
+                               Pages[] pages, boolean showSeeAllProducts, boolean showSeeAllPages ) {
         this.suggestions = suggestions;
         this.products = products;
         this.pages = pages;
@@ -17,28 +17,28 @@ public class Jresponse {
         this.showSeeAllPages = showSeeAllPages;
     }
 
-    public Cterm[] getSuggestions() {return this.suggestions; }
+    public Term[] getSuggestions() {return this.suggestions; }
     public String[] getProducts() {return this.products;}
-    public Cpages[] getPages() {return this.pages;}
+    public Pages[] getPages() {return this.pages;}
     public boolean getShowSeeAllProducts() {return this.showSeeAllProducts;}
     public boolean getShowSeeAllPages() {return this.showSeeAllPages;}
 
 
-    public static class Cterm {
+    public static class Term {
         public String term;
-        public void Cterm(String term){this.term = term;}
+        public void Term(String term){this.term = term;}
         public String getTerm() {return this.term;}
 
     }
 
-    public static class Cpages {
+    public static class Pages {
         public String id;
         public double boost;
         public String title;
         public String url;
         public String content;
 
-        public void Cpages(String id, double boost,String title,String url,String content){
+        public void Pages(String id, double boost,String title,String url,String content){
             this.id = id;
             this.boost = boost;
             this.title = title;
@@ -50,7 +50,5 @@ public class Jresponse {
         public String getTitle() {return  this.title;}
         public String getUrl() {return  this.url;}
         public String getContent() {return this.content;}
-
     }
-
 }
