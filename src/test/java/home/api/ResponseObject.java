@@ -8,7 +8,7 @@ public class ResponseObject {
     public boolean showSeeAllProducts;
     public boolean showSeeAllPages;
 
-    public ResponseObject(Term[] suggestions, String[] products,
+    public void ResponseObject(Term[] suggestions, String[] products,
                                Pages[] pages, boolean showSeeAllProducts, boolean showSeeAllPages ) {
         this.suggestions = suggestions;
         this.products = products;
@@ -36,7 +36,7 @@ public class ResponseObject {
 
     public static class Term {
         public String term;
-        public Term(String term){
+        public void Term(String term){
             this.term = term;
         }
         public String getTerm() {
@@ -52,7 +52,7 @@ public class ResponseObject {
         public String url;
         public String content;
 
-        public Pages(String id, double boost,String title,String url,String content){
+        public void Pages(String id, double boost,String title,String url,String content){
             this.id = id;
             this.boost = boost;
             this.title = title;
