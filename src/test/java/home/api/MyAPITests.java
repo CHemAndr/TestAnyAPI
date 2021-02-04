@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.post;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+//import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
 
@@ -15,10 +15,11 @@ public class MyAPITests {
     @Test
     public void test1(){
         ObjectMapper mapper = new ObjectMapper();
-        System.out.println("test1");
+        System.out.println();
+        System.out.println("test1 started");
         Response getResponse = get("https://www.wiley.com/en-us/search/autocomplete/comp_00001H9J?term=Java");
         System.out.println("Status Code :" + getResponse.getStatusCode());
-        assertEquals(200, getResponse.getStatusCode());
+        Assertions.assertEquals(200, getResponse.getStatusCode());
         String jsonStr = getResponse.asString();
         System.out.println("Response :" + jsonStr);
         try {
@@ -40,21 +41,23 @@ public class MyAPITests {
                 String title = responseObject.getPages()[i].getTitle();
                 System.out.println(title);
                 Assertions.assertTrue(title.contains("Wiley"));
+                System.out.println("test1 finished");
             }
         } catch (Exception e){
             System.out.println(e.getMessage());
-        }
+          }
     }
 
     @Test
     public void test2() {
         long acceptableDelay = 300; //Допустимое отклонение, мсек
-        long startTime = 0;//Время начала запроса
-        long finishTime = 0;//Время получения ответа
-        long avgDelay0 = 0;//Средняя задержка получения ответа при ее задании = 0 сек
-        long delayi  = 0; // Задержка получения ответа при ее задании от 1 до 14 сек
+        long startTime;//Время начала запроса
+        long finishTime;//Время получения ответа
+        long avgDelay0;//Средняя задержка получения ответа при ее задании = 0 сек
+        long delayi; // Задержка получения ответа при ее задании от 1 до 14 сек
 
-        System.out.println("test2");
+        System.out.println();
+        System.out.println("test2 started");
         //Десять запросов при нулевой задержке
         long[] mDelay0 = {0,0,0,0,0,0,0,0,0,0};
         for (int i=0; i<10; i++){
@@ -73,7 +76,8 @@ public class MyAPITests {
             startTime = System.currentTimeMillis();
             Response response = post("https://httpbin.org/delay/" +delayPath);
             finishTime = System.currentTimeMillis();
-            Assertions.assertTrue(response.getStatusCode() == 200);
+            Assertions.assertEquals(200, response.getStatusCode());
+            System.out.println("200 OK");
             delayi = finishTime - startTime - avgDelay0;
             if (i < 10) {
                 Assertions.assertTrue(Math.abs(delayi - i * 1000) < acceptableDelay);
@@ -90,7 +94,8 @@ public class MyAPITests {
             startTime = System.currentTimeMillis();
             Response response = post("https://httpbin.org/delay/-" + delayPath);
             finishTime = System.currentTimeMillis();
-            Assertions.assertTrue(response.getStatusCode() == 200);
+            Assertions.assertEquals(200,response.getStatusCode());
+            System.out.println("200 OK");
             delayi = finishTime - startTime - avgDelay0;
             Assertions.assertTrue(Math.abs(delayi) < acceptableDelay);
             System.out.println(-i + "  Задержка = " + delayi);
@@ -106,15 +111,16 @@ public class MyAPITests {
         Assertions.assertTrue(response.getStatusCode() > 400);
         System.out.println(response.getStatusCode());
 
-        //Запрос при вещественной задержке (интересно - точность задержки увеличилась !!!?)
+        //Запрос при вещественной задержке
         for (int i = 0; i < 10; i++) {
             String delayPath = Integer.toString(i);
             startTime = System.currentTimeMillis();
             response = post("https://httpbin.org/delay/3." + delayPath );
             finishTime = System.currentTimeMillis();
-            Assertions.assertTrue(response.getStatusCode() == 200);
+            Assertions.assertEquals(200,response.getStatusCode());
+            System.out.println("200 OK");
             delayi = finishTime - startTime - avgDelay0;
-            //Assertions.assertTrue(Math.abs(delayi - (3000 + i*100)) < 100L);
+            Assertions.assertTrue(Math.abs(delayi - (3000 + i*100)) < acceptableDelay);
             System.out.println("3." + i + "  Задержка = " + delayi);
             System.out.println(response.getStatusCode());
         }
@@ -123,20 +129,23 @@ public class MyAPITests {
         startTime = System.currentTimeMillis();
         response = post("https://httpbin.org/delay/-2.7");
         finishTime = System.currentTimeMillis();
-        Assertions.assertTrue(response.getStatusCode() == 200);
+        Assertions.assertEquals(200,response.getStatusCode());
+        System.out.println("200 OK");
         delayi = finishTime - startTime - avgDelay0;
         Assertions.assertTrue(Math.abs(delayi)<acceptableDelay);
         System.out.println(-2.7 + "  Задержка = " + delayi);
-        System.out.println(response.getStatusCode());
+        System.out.println("test2 finished");
     }
 
     @Test
     public void test3() {
-        System.out.println("test3");
+        System.out.println();
+        System.out.println("test3 started");
         Response response = get("https://httpbin.org/image/png");
         System.out.println("Status Code :" + response.getStatusCode());
-        assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals(200, response.getStatusCode());
         System.out.println("Response.header.content-type: " + response.getHeader("content-type"));
-        assertEquals("image/png",response.getHeader("content-type").trim());
+        Assertions.assertEquals("image/png",response.getHeader("content-type").trim());
+        System.out.println("test3 finished");
     }
 }
